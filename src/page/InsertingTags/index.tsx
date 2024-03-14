@@ -1,4 +1,4 @@
-import { Form as AntForm, Col, Dropdown, Menu, Button as AntBtn } from "antd";
+import { Form as AntForm, Dropdown, Menu, Button as AntBtn } from "antd";
 import { Form as FinalForm, Field as Fie } from "react-final-form";
 import React, { RefObject, useRef } from "react";
 import styled from "styled-components";
@@ -21,11 +21,37 @@ const Form = ({ children, setRef, render, decorators, onSubmit, className, succe
 const onTagSelected = (values: any, customTextAreaForEmail: RefObject<HTMLDivElement>) => {
   const insertHTML = (html: string) => {
     const selection = window.getSelection();
-    const range = selection?.getRangeAt(0);
-    const insertion = document.createRange().createContextualFragment(html);
 
-    range?.deleteContents();
-    range?.insertNode(insertion);
+    if (!selection || selection.rangeCount === 0) {
+      return;
+    }
+
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+
+    const insertion = document.createRange().createContextualFragment(html);
+    const lastNode = insertion.lastChild; // Get the last node of the inserted fragment
+
+    range.insertNode(insertion);
+
+    // Create a new range for setting the cursor position
+    const newRange = document.createRange();
+
+    if (lastNode) {
+      // Set the start and end positions of the range to the end of the last node
+      newRange.setStartAfter(lastNode);
+      newRange.setEndAfter(lastNode);
+    } else {
+      // If for some reason lastNode is not available, set the range to the original insertion point
+      newRange.setStart(range.endContainer, range.endOffset);
+      newRange.setEnd(range.endContainer, range.endOffset);
+    }
+
+    // Clear existing selections
+    selection.removeAllRanges();
+
+    // Add the new range, which moves the cursor to the end of the inserted content
+    selection.addRange(newRange);
   };
 
   const applyTagToTemplate = (customTextArea: RefObject<HTMLDivElement>, template: string, tag: string) => {
@@ -42,11 +68,9 @@ const onTagSelected = (values: any, customTextAreaForEmail: RefObject<HTMLDivEle
 };
 
 const FormBlock = ({ submitting, meta, label, labelComponent, tooltip, itemProps, formClassName, component: Component, noLabelHolder, explanation, inputError, ...props }: any) => (
-  <Col>
-    <AntForm.Item label={labelComponent} validateStatus={null ? "error" : undefined} colon={false} className={cn(formClassName || "", itemProps && itemProps.className)}>
-      <Component {...props} />
-    </AntForm.Item>
-  </Col>
+  <AntForm.Item label={labelComponent} validateStatus={null ? "error" : undefined} colon={false} className={cn(formClassName || "", itemProps && itemProps.className)}>
+    <Component {...props} />
+  </AntForm.Item>
 );
 
 const CustomTextArea = styled.div`
