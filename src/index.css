@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
 div.ant-form-item-control {
   line-height: 30px;
@@ -8,6 +8,7 @@ button.ant-btn-base {
   color: white;
   border-color: transparent;
 }
+
 button.ant-btn-base:hover,
 button.ant-btn-base:focus,
 button.ant-btn-base:active {
