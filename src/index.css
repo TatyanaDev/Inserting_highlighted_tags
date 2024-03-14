@@ -1,0 +1,49 @@
+@import '~antd/dist/antd.css';
+
+div.ant-form-item-control {
+  line-height: 30px;
+}
+
+button.ant-btn-base {
+  color: white;
+  border-color: transparent;
+}
+button.ant-btn-base:hover,
+button.ant-btn-base:focus,
+button.ant-btn-base:active {
+  background: #98a1b5;
+  color: white;
+  border-color: transparent;
+}
+
+button.ant-btn-radius {
+  border-radius: 5px;
+}
+
+.app-common-dropdown-with-buttons {
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(19, 49, 109, 0.16) !important;
+  max-width: 190px;
+  border-radius: 5px;
+  padding: 0 3px;
+}
+
+.app-common-dropdown-with-buttons button {
+  background-color: white;
+  color: #14316d;
+  width: 100%;
+  border-radius: 3px;
+  height: 36px;
+  text-align: start;
+}
+
+.app-common-dropdown-with-buttons button:hover,
+.app-common-dropdown-with-buttons button:active,
+.app-common-dropdown-with-buttons button:focus {
+  color: #14316d;
+  background: #f8f9fc !important;
+}
+
+.app-common-dropdown-with-buttons button div {
+  margin-bottom: 0;
+}
