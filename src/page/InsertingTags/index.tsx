@@ -67,7 +67,7 @@ const onTagSelected = (values: any, customTextAreaForEmail: RefObject<HTMLDivEle
   return onTagSelectedForEmail;
 };
 
-const FormBlock = ({ submitting, meta, label, labelComponent, tooltip, itemProps, formClassName, component: Component, noLabelHolder, explanation, inputError, ...props }: any) => (
+const FormBlock = ({ labelComponent, itemProps, formClassName, component: Component, ...props }: any) => (
   <AntForm.Item label={labelComponent} validateStatus={null ? "error" : undefined} colon={false} className={cn(formClassName || "", itemProps && itemProps.className)}>
     <Component {...props} />
   </AntForm.Item>
@@ -109,7 +109,7 @@ const withField =
   (props: T & Omit<any, "meta"> & { [key: string]: any }) =>
     <Fie component={Component} {...defaultProps} {...props} />;
 
-function Button({ label, bold = false, semiBold = false, upperCase = true, children, minorBtn, whiteBtn, lightBtn, outlineBtn, dangerTextBtn, className, supportBtn, smallRadius, ...props }: any) {
+function Button({ upperCase = true, children, className, ...props }: any) {
   const isBase = !props.type || props.type === "default";
 
   const resultClassName = cn(
@@ -127,7 +127,7 @@ function Button({ label, bold = false, semiBold = false, upperCase = true, child
   );
 }
 
-function Button2({ label, bold = false, semiBold = false, upperCase = true, children, minorBtn, whiteBtn, lightBtn, outlineBtn, dangerTextBtn, className, supportBtn, smallRadius, ...props }: any) {
+function Button2({ minorBtn, className, smallRadius, ...props }: any) {
   const isBase = !props.type || props.type === "default";
 
   const resultClassName = cn(
@@ -174,17 +174,16 @@ const ChannelsBlock = ({ values, onTagSelectedForEmail, customTextAreaForEmail }
   return (
     <TextAreaWithTags
       name="emailTemplate"
-      placeholder="Email template"
+      placeholder="Write your message"
       customTextArea={customTextAreaForEmail}
       values={values}
       labelComponent={
         <div style={{ display: "inline-block", overflow: "visible" }}>
           <Dropdown placement="topCenter" overlay={<DropdownMenu onItemSelect={onItemSelect} />}>
-            <TagButton label="button.reminder.addTag" smallRadius minorBtn ghost upperCase={false} />
+            <TagButton smallRadius minorBtn ghost />
           </Dropdown>
         </div>
       }
-      onClickSendTestMessage={() => {}}
     />
   );
 };
