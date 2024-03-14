@@ -7,7 +7,6 @@
     "classnames": "^2.2.6",
     "dompurify": "2.2.6",
     "final-form": "4.18.4",
-    "lodash": "^4.17.15",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-final-form": "^6.3.0",
@@ -35,14 +34,13 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.7",
-    "@types/react-router": "^5.1.12",
-    "@types/react": "^16.8.8",
     "@types/classnames": "^2.2.9",
-    "@types/react-dom": "^16.8.3",
-    "@types/lodash": "^4.14.137",
-    "@types/styled-components": "^5.1.8",
     "@types/dompurify": "^3.0.5",
+    "@types/react": "^16.8.8",
+    "@types/react-dom": "^16.8.3",
+    "@types/react-router": "^5.1.12",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/styled-components": "^5.1.8",
     "react-scripts": "3.4.1",
     "typescript": "^4.2.3"
   }

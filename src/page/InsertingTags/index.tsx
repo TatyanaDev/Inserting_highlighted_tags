@@ -2,7 +2,6 @@ import { Form as AntForm, Col, Dropdown, Menu, Button as AntBtn } from "antd";
 import { Form as FinalForm, Field as Fie } from "react-final-form";
 import React, { RefObject, useRef } from "react";
 import styled from "styled-components";
-import { omit, pick } from "lodash";
 import DOMPurify from "dompurify";
 import cn from "classnames";
 import tags from "../../constants";
@@ -43,9 +42,9 @@ const onTagSelected = (values: any, customTextAreaForEmail: RefObject<HTMLDivEle
 };
 
 const FormBlock = ({ submitting, meta, label, labelComponent, tooltip, itemProps, formClassName, component: Component, noLabelHolder, explanation, inputError, ...props }: any) => (
-  <Col {...pick(props, ["span", "order", "offset", "push", "pull", "xs", "sm", "md", "lg", "xl", "xxl", "noLabelHolder"])}>
+  <Col>
     <AntForm.Item label={labelComponent} validateStatus={null ? "error" : undefined} colon={false} className={cn(formClassName || "", itemProps && itemProps.className)}>
-      <Component {...omit(props, ["span", "order", "offset", "push", "pull", "xs", "sm", "md", "lg", "xl", "xxl", "noLabelHolder"])} />
+      <Component {...props} />
     </AntForm.Item>
   </Col>
 );
@@ -74,9 +73,7 @@ const CustomTextArea = styled.div`
 const withFormBlock = (Component: any, itemProps?: any) => (props: any & { noFormBlock?: boolean }) => <FormBlock component={Component} itemProps={itemProps} {...props} />;
 
 const FormTextAreaWithTags = ({ input, values, customTextArea, placeholder, contentEditable = true }: any) => {
-  const onKeyUp = () => {
-    values[input.name] = customTextArea.current?.innerText;
-  };
+  const onKeyUp = () => (values[input.name] = customTextArea.current?.innerText);
 
   return <CustomTextArea id={input.name} contentEditable ref={customTextArea} suppressContentEditableWarning dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(input.value.replace(/\n\r?/g, "<br />")) }} theme={{ placeholder, contentEditable }} onKeyUp={onKeyUp} />;
 };
@@ -90,22 +87,15 @@ const withField =
 
 function Button({ label, bold = false, semiBold = false, upperCase = true, children, minorBtn, whiteBtn, lightBtn, outlineBtn, dangerTextBtn, className, supportBtn, smallRadius, ...props }: any) {
   const isBase = !props.type || props.type === "default";
+
   const resultClassName = cn(
     {
       "ant-btn-base": isBase,
-      "ant-btn-minor": minorBtn,
-      "ant-btn-white": whiteBtn,
-      "ant-btn-outline": outlineBtn,
-      "ant-btn-light": lightBtn,
-      "ant-btn-danger-text": dangerTextBtn,
-      bold,
-      "semi-bold": semiBold,
       "upper-case": upperCase,
-      "ant-btn-support": supportBtn,
-      "ant-btn-radius": smallRadius,
     },
     className
   );
+
   return (
     <AntBtn {...props} className={resultClassName}>
       {children}
@@ -115,22 +105,15 @@ function Button({ label, bold = false, semiBold = false, upperCase = true, child
 
 function Button2({ label, bold = false, semiBold = false, upperCase = true, children, minorBtn, whiteBtn, lightBtn, outlineBtn, dangerTextBtn, className, supportBtn, smallRadius, ...props }: any) {
   const isBase = !props.type || props.type === "default";
+
   const resultClassName = cn(
     {
       "ant-btn-base": isBase,
       "ant-btn-minor": minorBtn,
-      "ant-btn-white": whiteBtn,
-      "ant-btn-outline": outlineBtn,
-      "ant-btn-light": lightBtn,
-      "ant-btn-danger-text": dangerTextBtn,
-      bold,
-      "semi-bold": semiBold,
-      "upper-case": upperCase,
-      "ant-btn-support": supportBtn,
-      "ant-btn-radius": smallRadius,
     },
     className
   );
+
   return (
     <AntBtn {...props} className={resultClassName}>
       Add tag
@@ -159,15 +142,13 @@ const DropdownMenu = ({ onItemSelect, ...props }: any) => (
   </Menu>
 );
 
-class Fields {
-  static TextAreaWithTags = withField(FormTextAreaWithTagsw);
-}
+const TextAreaWithTags = withField(FormTextAreaWithTagsw);
 
 const ChannelsBlock = ({ values, onTagSelectedForEmail, customTextAreaForEmail }: any) => {
   const onItemSelect = (key: string) => onTagSelectedForEmail("emailTemplate", key);
 
   return (
-    <Fields.TextAreaWithTags
+    <TextAreaWithTags
       name="emailTemplate"
       placeholder="Email template"
       customTextArea={customTextAreaForEmail}
