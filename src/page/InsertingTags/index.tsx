@@ -1,6 +1,6 @@
 import { Form as AntForm, Dropdown, Menu, Button as AntBtn } from "antd";
 import { Form as FinalForm, Field as Fie } from "react-final-form";
-import React, { RefObject, useRef } from "react";
+import React, { ComponentType, RefObject, useRef } from "react";
 import styled from "styled-components";
 import DOMPurify from "dompurify";
 import cn from "classnames";
@@ -96,21 +96,21 @@ const CustomTextArea = styled.div`
 
 const withFormBlock = (Component: any, itemProps?: any) => (props: any & { noFormBlock?: boolean }) => <FormBlock component={Component} itemProps={itemProps} {...props} />;
 
-const FormTextAreaWithTags = ({ input, values, customTextArea, placeholder, contentEditable = true }: any) => {
+const FormTextAreaWithTags = ({ input, values, customTextArea, placeholder }: any) => {
   const onKeyUp = () => (values[input.name] = customTextArea.current?.innerText);
 
-  return <CustomTextArea id={input.name} contentEditable ref={customTextArea} suppressContentEditableWarning dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(input.value.replace(/\n\r?/g, "<br />")) }} theme={{ placeholder, contentEditable }} onKeyUp={onKeyUp} />;
+  return <CustomTextArea id={input.name} contentEditable ref={customTextArea} suppressContentEditableWarning dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(input.value.replace(/\n\r?/g, "<br />")) }} theme={{ placeholder }} onKeyUp={onKeyUp} />;
 };
 
 const FormTextAreaWithTagsw = withFormBlock(FormTextAreaWithTags);
 
 const withField =
-  <T extends { name: string }>(Component: React.ComponentType<any>, defaultProps?: any) =>
+  <T extends { name: string }>(Component: ComponentType<any>, defaultProps?: any) =>
   (props: T & Omit<any, "meta"> & { [key: string]: any }) =>
     <Fie component={Component} {...defaultProps} {...props} />;
 
-function Button({ upperCase = true, children, className, ...props }: any) {
-  const isBase = !props.type || props.type === "default";
+function Button({ upperCase = true, children, className, type, onClick }: any) {
+  const isBase = !type || type === "default";
 
   const resultClassName = cn(
     {
@@ -121,14 +121,14 @@ function Button({ upperCase = true, children, className, ...props }: any) {
   );
 
   return (
-    <AntBtn {...props} className={resultClassName}>
+    <AntBtn className={resultClassName} onClick={onClick}>
       {children}
     </AntBtn>
   );
 }
 
-function Button2({ minorBtn, className, smallRadius, ...props }: any) {
-  const isBase = !props.type || props.type === "default";
+function Button2({ minorBtn, className, smallRadius, type, ...props }: any) {
+  const isBase = !type || type === "default";
 
   const resultClassName = cn(
     {
@@ -169,20 +169,18 @@ const DropdownMenu = ({ onItemSelect, ...props }: any) => (
 const TextAreaWithTags = withField(FormTextAreaWithTagsw);
 
 const ChannelsBlock = ({ values, onTagSelectedForEmail, customTextAreaForEmail }: any) => {
-  const onItemSelect = (key: string) => onTagSelectedForEmail("emailTemplate", key);
+  const onItemSelect = (key: string) => onTagSelectedForEmail("template", key);
 
   return (
     <TextAreaWithTags
-      name="emailTemplate"
+      name="template"
       placeholder="Write your message"
       customTextArea={customTextAreaForEmail}
       values={values}
       labelComponent={
-        <div style={{ display: "inline-block", overflow: "visible" }}>
-          <Dropdown placement="topCenter" overlay={<DropdownMenu onItemSelect={onItemSelect} />}>
-            <TagButton smallRadius minorBtn ghost />
-          </Dropdown>
-        </div>
+        <Dropdown placement="topCenter" overlay={<DropdownMenu onItemSelect={onItemSelect} />}>
+          <TagButton smallRadius minorBtn ghost />
+        </Dropdown>
       }
     />
   );
