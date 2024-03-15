@@ -33,14 +33,14 @@ button.ant-btn-radius {
 
 .app-common-dropdown-with-buttons {
   overflow: hidden;
-  box-shadow: 0 3px 6px rgba(19, 49, 109, 0.16) !important;
+  box-shadow: 0 3px 6px rgba(19, 49, 109, 0.16);
   max-width: 190px;
   border-radius: 5px;
   padding: 0 3px;
 }
 
 .app-common-dropdown-with-buttons button {
-  background-color: white;
+  background: white;
   color: #14316d;
   width: 100%;
   border-radius: 3px;
@@ -52,9 +52,5 @@ button.ant-btn-radius {
 .app-common-dropdown-with-buttons button:active,
 .app-common-dropdown-with-buttons button:focus {
   color: #14316d;
-  background: #f8f9fc !important;
-}
-
-.app-common-dropdown-with-buttons button div {
-  margin-bottom: 0;
+  background: #f8f9fc;
 }

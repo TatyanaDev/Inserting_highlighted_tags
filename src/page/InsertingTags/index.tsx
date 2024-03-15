@@ -1,76 +1,28 @@
-import { Form as AntForm, Dropdown, Menu, Button as AntBtn } from "antd";
-import { Form as FinalForm, Field as Fie } from "react-final-form";
-import React, { ComponentType, RefObject, useRef } from "react";
+import { Form as AntdForm, Dropdown, Menu, Button as AntBtn } from "antd";
+import { Form as FinalForm, Field } from "react-final-form";
+import React, { ComponentType, useRef } from "react";
 import styled from "styled-components";
 import DOMPurify from "dompurify";
 import cn from "classnames";
+import onTagSelected from "../../helpers";
 import tags from "../../constants";
 
-const Form = ({ children, setRef, render, decorators, className }: any) => (
-  <FinalForm ref={setRef} validateOnBlur={false} decorators={decorators} onSubmit={() => {}} className={className}>
+const Form = ({ children, setRef, render }: any) => (
+  <FinalForm ref={setRef} validateOnBlur={false} onSubmit={() => {}}>
     {(props) => (
-      <AntForm onSubmit={props.handleSubmit}>
+      <AntdForm onSubmit={props.handleSubmit}>
         {(render || children)({
           ...props,
         })}
-      </AntForm>
+      </AntdForm>
     )}
   </FinalForm>
 );
 
-const onTagSelected = (values: { [key: string]: string | undefined }, customTextAreaForEmail: RefObject<HTMLDivElement>) => {
-  const insertHTML = (html: string) => {
-    const selection = window.getSelection();
-
-    if (!selection || selection.rangeCount === 0) {
-      return;
-    }
-
-    const range = selection.getRangeAt(0);
-    range.deleteContents();
-
-    const insertion = document.createRange().createContextualFragment(html);
-    const lastNode = insertion.lastChild; // Get the last node of the inserted fragment
-
-    range.insertNode(insertion);
-
-    // Create a new range for setting the cursor position
-    const newRange = document.createRange();
-
-    if (lastNode) {
-      // Set the start and end positions of the range to the end of the last node
-      newRange.setStartAfter(lastNode);
-      newRange.setEndAfter(lastNode);
-    } else {
-      // If for some reason lastNode is not available, set the range to the original insertion point
-      newRange.setStart(range.endContainer, range.endOffset);
-      newRange.setEnd(range.endContainer, range.endOffset);
-    }
-
-    // Clear existing selections
-    selection.removeAllRanges();
-
-    // Add the new range, which moves the cursor to the end of the inserted content
-    selection.addRange(newRange);
-  };
-
-  const applyTagToTemplate = (customTextArea: RefObject<HTMLDivElement>, template: string, tag: string) => {
-    customTextArea.current?.focus();
-    insertHTML(` ${tag} `);
-    values[template] = customTextArea.current?.innerText;
-  };
-
-  const applyCreatedTag = (customTextArea: RefObject<HTMLDivElement>) => (template: string, tag: string) => applyTagToTemplate(customTextArea, template, tag);
-
-  const onTagSelectedForEmail = applyCreatedTag(customTextAreaForEmail);
-
-  return onTagSelectedForEmail;
-};
-
-const FormBlock = ({ labelComponent, itemProps, formClassName, component: Component, ...props }: any) => (
-  <AntForm.Item label={labelComponent} validateStatus={null ? "error" : undefined} colon={false} className={cn(formClassName || "", itemProps && itemProps.className)}>
+const FormBlock = ({ labelComponent, component: Component, ...props }: any) => (
+  <AntdForm.Item label={labelComponent} colon={false}>
     <Component {...props} />
-  </AntForm.Item>
+  </AntdForm.Item>
 );
 
 const CustomTextArea = styled.div`
@@ -94,17 +46,21 @@ const CustomTextArea = styled.div`
   }
 `;
 
-const withFormBlock = (Component: any, itemProps?: any) => (props: any & { noFormBlock?: boolean }) => <FormBlock component={Component} itemProps={itemProps} {...props} />;
+const withFormBlock = (Component: ComponentType) => (props: any) => <FormBlock component={Component} {...props} />;
 
 const FormTextAreaWithTags = ({ input, values, customTextArea, placeholder }: any) => {
-  const onKeyUp = () => (values[input.name] = customTextArea.current?.innerText);
+  const onKeyUp = () => {
+    if (customTextArea.current) {
+      values[input.name] = customTextArea.current.innerText;
+    }
+  };
 
   return <CustomTextArea id={input.name} contentEditable ref={customTextArea} suppressContentEditableWarning dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(input.value.replace(/\n\r?/g, "<br />")) }} theme={{ placeholder }} onKeyUp={onKeyUp} />;
 };
 
 const FormTextAreaWithTagsw = withFormBlock(FormTextAreaWithTags);
 
-const withField = (Component: ComponentType, defaultProps?: any) => (props: { name: string } & { [key: string]: any }) => <Fie component={Component} {...defaultProps} {...props} />;
+const withField = (Component: ComponentType, defaultProps?: any) => (props: { name: string } & { [key: string]: any }) => <Field component={Component} {...defaultProps} {...props} />;
 
 function Button({ upperCase = true, children, className, type, onClick }: any) {
   const isBase = !type || type === "default";
@@ -165,14 +121,14 @@ const DropdownMenu = ({ onItemSelect, ...props }: any) => (
 
 const TextAreaWithTags = withField(FormTextAreaWithTagsw);
 
-const ChannelsBlock = ({ values, onTagSelectedForEmail, customTextAreaForEmail }: any) => {
-  const onItemSelect = (key: string) => onTagSelectedForEmail("template", key);
+const ChannelsBlock = ({ values, onTagSelect, customTextArea }: any) => {
+  const onItemSelect = (key: string) => onTagSelect("template", key);
 
   return (
     <TextAreaWithTags
       name="template"
       placeholder="Write your message"
-      customTextArea={customTextAreaForEmail}
+      customTextArea={customTextArea}
       values={values}
       labelComponent={
         <Dropdown placement="topCenter" overlay={<DropdownMenu onItemSelect={onItemSelect} />}>
@@ -184,14 +140,14 @@ const ChannelsBlock = ({ values, onTagSelectedForEmail, customTextAreaForEmail }
 };
 
 export default function InsertingTags() {
-  const customTextAreaForEmail = useRef(null);
+  const customTextArea = useRef(null);
 
   return (
     <Form>
       {({ values }: any) => {
-        const onTagSelectedForEmail = onTagSelected(values, customTextAreaForEmail);
+        const onTagSelect = onTagSelected(values, customTextArea);
 
-        return <ChannelsBlock values={values} onTagSelectedForEmail={onTagSelectedForEmail} customTextAreaForEmail={customTextAreaForEmail} />;
+        return <ChannelsBlock values={values} onTagSelect={onTagSelect} customTextArea={customTextArea} />;
       }}
     </Form>
   );
