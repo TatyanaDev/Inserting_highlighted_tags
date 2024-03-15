@@ -1,11 +1,11 @@
-import { Form as AntdForm, Dropdown, Menu, Button as AntBtn } from "antd";
+import { Form as AntdForm, Dropdown, Button as AntBtn } from "antd";
 import { Form as FinalForm, Field } from "react-final-form";
 import React, { ComponentType, useRef } from "react";
 import styled from "styled-components";
 import DOMPurify from "dompurify";
 import cn from "classnames";
+import DropdownMenu from "../../components/DropdownMenu";
 import onTagSelected from "../../helpers";
-import tags from "../../constants";
 
 const Form = ({ children, setRef, render }: any) => (
   <FinalForm ref={setRef} validateOnBlur={false} onSubmit={() => {}}>
@@ -62,24 +62,6 @@ const FormTextAreaWithTagsw = withFormBlock(FormTextAreaWithTags);
 
 const withField = (Component: ComponentType, defaultProps?: any) => (props: { name: string } & { [key: string]: any }) => <Field component={Component} {...defaultProps} {...props} />;
 
-function Button({ upperCase = true, children, className, type, onClick }: any) {
-  const isBase = !type || type === "default";
-
-  const resultClassName = cn(
-    {
-      "ant-btn-base": isBase,
-      "upper-case": upperCase,
-    },
-    className
-  );
-
-  return (
-    <AntBtn className={resultClassName} onClick={onClick}>
-      {children}
-    </AntBtn>
-  );
-}
-
 function Button2({ minorBtn, className, smallRadius, type, ...props }: any) {
   const isBase = !type || type === "default";
 
@@ -108,16 +90,6 @@ const TagButton = styled(Button2)`
   border-color: #14316d !important;
   color: #14316d !important;
 `;
-
-const DropdownMenu = ({ onItemSelect, ...props }: any) => (
-  <Menu className="app-common-dropdown-with-buttons" {...props}>
-    {tags.map(({ label }) => (
-      <Button key={label} onClick={() => onItemSelect(label)}>
-        {label}
-      </Button>
-    ))}
-  </Menu>
-);
 
 const TextAreaWithTags = withField(FormTextAreaWithTagsw);
 
