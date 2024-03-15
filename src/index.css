@@ -10,24 +10,24 @@ body {
   font-family: sans-serif;
 }
 
-div.ant-form-item-control {
+.ant-form-item-control {
   line-height: 30px;
 }
 
-button.ant-btn-base {
+.ant-btn-base {
   color: white;
   border-color: transparent;
 }
 
-button.ant-btn-base:hover,
-button.ant-btn-base:focus,
-button.ant-btn-base:active {
+.ant-btn-base:hover,
+.ant-btn-base:focus,
+.ant-btn-base:active {
   background: #98a1b5;
   color: white;
   border-color: transparent;
 }
 
-button.ant-btn-radius {
+.ant-btn-radius {
   border-radius: 5px;
 }
 
@@ -53,4 +53,39 @@ button.ant-btn-radius {
 .dropdown-menu button:focus {
   color: #14316d;
   background: #f8f9fc;
+}
+
+.add-tag-button {
+  padding: 3px 11px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  height: auto;
+  border: 2px solid #14316d;
+  border-color: #14316d !important;
+  color: #14316d !important;
+}
+
+.custom-text-area {
+  border: 1px solid #adb6cc;
+  border-radius: 20px;
+  color: #213e76;
+  margin-bottom: 8px;
+  padding: 4px 11px;
+  outline: none;
+  transition: all 0.3s;
+  overflow: auto;
+}
+
+.custom-text-area:empty:before {
+  content: "Write your message";
+  color: #adb6cc;
+}
+
+.custom-text-area:hover {
+  border: 1px solid #213e76;
+}
+
+.custom-text-area:focus {
+  border: 1px solid rgb(110, 223, 235);
 }
