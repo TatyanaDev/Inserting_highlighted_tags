@@ -6,9 +6,9 @@ import DOMPurify from "dompurify";
 import cn from "classnames";
 import tags from "../../constants";
 
-const Form = ({ children, setRef, render, decorators, onSubmit, className, successMessage, ...rest }: any) => (
-  <FinalForm {...rest} ref={setRef} validateOnBlur={false} decorators={decorators} onSubmit={() => {}} className={className}>
-    {(props: any) => (
+const Form = ({ children, setRef, render, decorators, className }: any) => (
+  <FinalForm ref={setRef} validateOnBlur={false} decorators={decorators} onSubmit={() => {}} className={className}>
+    {(props) => (
       <AntForm onSubmit={props.handleSubmit}>
         {(render || children)({
           ...props,
@@ -18,7 +18,7 @@ const Form = ({ children, setRef, render, decorators, onSubmit, className, succe
   </FinalForm>
 );
 
-const onTagSelected = (values: any, customTextAreaForEmail: RefObject<HTMLDivElement>) => {
+const onTagSelected = (values: { [key: string]: string | undefined }, customTextAreaForEmail: RefObject<HTMLDivElement>) => {
   const insertHTML = (html: string) => {
     const selection = window.getSelection();
 
@@ -104,10 +104,7 @@ const FormTextAreaWithTags = ({ input, values, customTextArea, placeholder }: an
 
 const FormTextAreaWithTagsw = withFormBlock(FormTextAreaWithTags);
 
-const withField =
-  <T extends { name: string }>(Component: ComponentType<any>, defaultProps?: any) =>
-  (props: T & Omit<any, "meta"> & { [key: string]: any }) =>
-    <Fie component={Component} {...defaultProps} {...props} />;
+const withField = (Component: ComponentType, defaultProps?: any) => (props: { name: string } & { [key: string]: any }) => <Fie component={Component} {...defaultProps} {...props} />;
 
 function Button({ upperCase = true, children, className, type, onClick }: any) {
   const isBase = !type || type === "default";
