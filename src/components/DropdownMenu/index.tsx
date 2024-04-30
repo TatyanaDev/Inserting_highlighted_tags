@@ -13,7 +13,7 @@ interface TagButtonProps {
 }
 
 const TagButton = ({ children, onClick }: TagButtonProps) => (
-  <Button className={cn("ant-btn-base", "upper-case")} onClick={onClick}>
+  <Button className={cn("ant-btn-base", "upper-case", "tag-button")} onClick={onClick}>
     {children}
   </Button>
 );
