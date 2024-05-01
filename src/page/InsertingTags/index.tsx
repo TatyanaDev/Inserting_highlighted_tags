@@ -13,7 +13,7 @@ const InsertingTags = () => {
   const customTextArea = useRef<HTMLDivElement>(null);
 
   const handleTextAreaChange = useCallback((textAreaValue) => setTextAreaValue(textAreaValue), []);
-  
+
   const pattern = new RegExp(`(${tagsValues.join("|")})(?![A-Z])`, "g");
   const highlightedTextAreaValue = DOMPurify.sanitize(textAreaValue.replace(pattern, "<span>$1</span>").replace(/\n\n\r?/g, "<div><br /></div>"));
 
@@ -45,7 +45,7 @@ const InsertingTags = () => {
         const onItemSelect = (key: string) => onTagSelect("template", key);
 
         return (
-          <>
+          <div className="container">
             <div suppressContentEditableWarning dangerouslySetInnerHTML={{ __html: highlightedTextAreaValue }} className="highlighted-tags" />
 
             <TextAreaWithTags
@@ -59,7 +59,7 @@ const InsertingTags = () => {
                 </Dropdown>
               }
             />
-          </>
+          </div>
         );
       }}
     </Form>

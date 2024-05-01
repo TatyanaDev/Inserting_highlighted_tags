@@ -42,6 +42,21 @@ body {
   border-radius: 5px;
 }
 
+.container {
+  position: relative;
+}
+
+.add-tag-button {
+  border-color: #14316d !important;
+  color: #14316d !important;
+  border: 2px solid #14316d;
+  line-height: 16px;
+  padding: 3px 11px;
+  font-weight: 500;
+  font-size: 14px;
+  height: auto;
+}
+
 .dropdown-menu {
   box-shadow: 0 3px 6px rgba(19, 49, 109, 0.16);
   border-radius: 5px;
@@ -66,26 +81,15 @@ body {
   color: #14316d;
 }
 
-.add-tag-button {
-  border-color: #14316d !important;
-  color: #14316d !important;
-  border: 2px solid #14316d;
-  line-height: 16px;
-  padding: 3px 11px;
-  font-weight: 500;
-  font-size: 14px;
-  height: auto;
-}
-
 .custom-text-area {
   border: 1px solid #adb6cc;
-  background: #ffffff;
+  caret-color: #213e76;
   transition: all 0.3s;
   border-radius: 20px;
+  color: transparent;
   margin-bottom: 8px;
   padding: 4px 11px;
   min-height: 220px;
-  color: #213e76;
   overflow: auto;
   outline: none;
   width: 650px;
@@ -115,12 +119,14 @@ body {
   overflow-wrap: break-word;
   background: #ffffff;
   border-radius: 20px;
+  position: absolute;
   line-height: 30px;
   padding: 4px 11px;
   min-height: 220px;
   text-align: start;
   color: #213e76;
   width: 650px;
+  top: 40px;
 }
 
 .highlighted-tags span {
