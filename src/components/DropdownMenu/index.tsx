@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Menu, Button } from "antd";
 import cn from "classnames";
-import tags from "../../constants";
+import { tags } from "../../constants";
 
 interface DropdownMenuProps {
   onItemSelect: (label: string) => void;

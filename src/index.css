@@ -62,7 +62,7 @@ body {
 .tag-button:hover,
 .tag-button:active,
 .tag-button:focus {
-  background: #f8f9fc;
+  background: #adb6cc;
   color: #14316d;
 }
 
@@ -102,4 +102,28 @@ body {
 
 .custom-text-area:focus {
   border: 1px solid rgb(110, 223, 235);
+}
+
+.custom-text-area div br::selection,
+.custom-text-area div::selection,
+.custom-text-area::selection {
+  background: #213e76;
+}
+
+.highlighted-tags {
+  border: 1px solid transparent;
+  overflow-wrap: break-word;
+  background: #ffffff;
+  border-radius: 20px;
+  line-height: 30px;
+  padding: 4px 11px;
+  min-height: 220px;
+  text-align: start;
+  color: #213e76;
+  width: 650px;
+}
+
+.highlighted-tags span {
+  background: #213e76;
+  color: #ffffff;
 }

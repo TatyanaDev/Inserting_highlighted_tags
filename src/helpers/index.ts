@@ -35,12 +35,15 @@ const insertHTML = (html: string) => {
   selection.addRange(newRange);
 };
 
-const onTagSelected = (values: { [key: string]: string | undefined }, customTextArea: RefObject<HTMLDivElement>) => {
+const onTagSelected = (values: { [key: string]: string | undefined }, customTextArea: RefObject<HTMLDivElement>, handleTextAreaChange: (textAreaValue: string) => void) => {
   const applyTagToTemplate = (customTextArea: RefObject<HTMLDivElement>, template: string, tag: string) => {
     if (customTextArea.current) {
       customTextArea.current.focus();
       insertHTML(` ${tag} `);
-      values[template] = customTextArea.current.innerText;
+      const textAreaValue = customTextArea.current.innerText;
+
+      values[template] = textAreaValue;
+      handleTextAreaChange(textAreaValue);
     }
   };
 

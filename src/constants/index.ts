@@ -1,4 +1,9 @@
-const tags = [
+interface Tag {
+  label: string;
+  value: string;
+}
+
+export const tags: Tag[] = [
   { label: "CLIENT_FIRST_NAME", value: "CLIENT_FIRST_NAME" },
   { label: "CLIENT_LAST_NAME", value: "CLIENT_LAST_NAME" },
   { label: "STAFF_FIRST_NAME", value: "STAFF_FIRST_NAME" },
@@ -17,4 +22,4 @@ const tags = [
   { label: "LOCATION_EMAIL", value: "LOCATION_EMAIL" },
 ];
 
-export default tags;
+export const tagsValues = tags.map((tag: Tag) => tag.value);
