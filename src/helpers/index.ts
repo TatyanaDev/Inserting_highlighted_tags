@@ -37,13 +37,14 @@ const insertHTML = (html: string) => {
 
 const onTagSelected = (values: { [key: string]: string | undefined }, customTextArea: RefObject<HTMLDivElement>, handleTextAreaChange: (textAreaValue: string) => void) => {
   const applyTagToTemplate = (customTextArea: RefObject<HTMLDivElement>, template: string, tag: string) => {
-    if (customTextArea.current) {
-      customTextArea.current.focus();
-      insertHTML(` ${tag} `);
-      const textAreaValue = customTextArea.current.innerText;
+    const current = customTextArea.current;
 
-      values[template] = textAreaValue;
-      handleTextAreaChange(textAreaValue);
+    if (current) {
+      current.focus();
+      insertHTML(` ${tag} `);
+
+      values[template] = current.innerText;
+      handleTextAreaChange(current.innerHTML);
     }
   };
 

@@ -15,14 +15,14 @@ const InsertingTags = () => {
   const handleTextAreaChange = useCallback((textAreaValue) => setTextAreaValue(textAreaValue), []);
 
   const pattern = new RegExp(`(${tagsValues.join("|")})(?![A-Z])`, "g");
-  const highlightedTextAreaValue = DOMPurify.sanitize(textAreaValue.replace(pattern, "<span>$1</span>").replace(/\n\n\r?/g, "<div><br /></div>"));
+  const highlightedTextAreaValue = DOMPurify.sanitize(textAreaValue.replace(pattern, "<span>$1</span>"));
 
   useEffect(() => {
     if (customTextArea.current) {
       const textArea = customTextArea.current;
 
       const handleInput = () => {
-        const textAreaValue = textArea.innerText;
+        const textAreaValue = textArea.innerHTML;
 
         setTextAreaValue(textAreaValue);
       };
