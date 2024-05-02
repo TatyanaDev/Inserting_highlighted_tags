@@ -1,7 +1,23 @@
-import React, { ComponentType, FC, ReactElement, ReactNode, RefObject } from "react";
+import React, { ChangeEvent, ComponentType, FC, FocusEvent, ReactElement, ReactNode, RefObject } from "react";
 import { Field, FieldRenderProps } from "react-final-form";
 import { Form as AntdForm } from "antd";
 import DOMPurify from "dompurify";
+
+interface FieldProps {
+  input: {
+    name: string;
+    value: string;
+    onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onBlur: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onFocus: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  };
+  meta: {
+    touched: boolean;
+    error?: string;
+    submitError?: string;
+    dirtySinceLastSubmit?: boolean;
+  };
+}
 
 interface FormBlockProps<T> {
   labelComponent: ReactNode;
@@ -9,11 +25,7 @@ interface FormBlockProps<T> {
   props: T;
 }
 
-interface FormTextAreaWithTagsProps {
-  input: {
-    name: string;
-    value: string;
-  };
+interface FormTextAreaWithTagsProps extends FieldProps {
   values: Record<string, string>;
   customTextArea: RefObject<HTMLDivElement>;
 }
@@ -41,7 +53,7 @@ const withFormBlock =
     <FormBlock component={Component} {...props} />;
 
 const withField =
-  <P extends FieldRenderProps<any, HTMLElement, any>>(Component: ComponentType<P>, defaultProps?: Record<string, string>) =>
+  <P extends FieldRenderProps<FieldProps, HTMLElement>>(Component: ComponentType<P>, defaultProps?: Record<string, string>) =>
   (props: any) =>
     <Field component={Component} {...defaultProps} {...props} />;
 
